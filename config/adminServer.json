@@ -1,5 +1,22 @@
-[{
+[
+  {
+    "type": "gate",
+    "token": "agarxhqb98rpajloaxn34ga8xrunpagkjwlaw3ruxnpaagl29w4rxngt"
+  },
+  {
     "type": "connector",
-    "token": "agarxhqb98rpajloaxn34ga8xrunpagkjwlaw3ruxnpaagl29w4rxn"
-}
+    "token": "agarxhqb98rpajloaxn34ga8xrunpagkjwlaw3ruxnpaagl29w4rxnct"
+  },
+  {
+    "type": "auth",
+    "token": "agarxhqb98rpajloaxn34ga8xrunpagkjwlaw3ruxnpaagl29w4rxnat"
+  },
+  {
+    "type": "game",
+    "token": "agarxhqb98rpajloaxn34ga8xrunpagkjwlaw3ruxnpaagl29w4rxngm"
+  },
+  {
+    "type": "chat",
+    "token": "agarxhqb98rpajloaxn34ga8xrunpagkjwlaw3ruxnpaagl29w4rxnct"
+  }
 ]

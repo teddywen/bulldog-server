@@ -1,9 +1,11 @@
 {
-    "name":"bulldog-server",
-    "version":"0.0.1",
-    "private":false,
-    "dependencies":{
-        "pomelo":"1.2.3"
-    }
+  "name": "bulldog-server",
+  "version": "0.0.1",
+  "private": false,
+  "dependencies": {
+    "pomelo": "~1.2.3",
+    "crc": "~3.4.0",
+    "bearcat": "~0.4.29"
+  }
 }
 

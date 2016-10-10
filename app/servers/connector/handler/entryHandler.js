@@ -1,51 +1,67 @@
 module.exports = function(app) {
-  return new Handler(app);
+  return new EntryHandler(app);
 };
 
-var Handler = function(app) {
-  this.app = app;
+var EntryHandler = function(app) {
+  this._app = app;
+};
+
+var prototype = EntryHandler.prototype;
+
+/**
+ * 游客授权 获得accessToken
+ *
+ * @param {Object} msg
+ * @param {Object} session
+ * @param {Function} next
+ * @return {void}
+ */
+prototype.authAsGuest = function (msg, session, next) {
+  this._app.rpc.auth.authRemote.generateGuestAndToken(session, function (res) {
+    if (res.ok) {
+      next(null, {code: 200, accessToken: res.accessToken});
+    } else {
+      next(null, {code: 500, msg: 'Generate guest account failed.'});
+    }
+  });
 };
 
 /**
- * New client entry.
+ * 微信授权 获得accessToken
  *
- * @param  {Object}   msg     request message
- * @param  {Object}   session current session object
- * @param  {Function} next    next step callback
- * @return {Void}
+ * @param {Object} msg
+ * @param {Object} session
+ * @param {Function} next
+ * @return {void}
  */
-Handler.prototype.entry = function(msg, session, next) {
-  next(null, {code: 200, msg: 'game server is ok.'});
+prototype.authWithOpenid = function (msg, session, next) {
+  if (!msg.hasOwnProperty('openid')) {
+    next(null, {code: 500, msg: 'Param openid is missing.'});
+    return;
+  }
+  this._app.rpc.auth.authRemote.queryTokenWithOpenid(session, msg.openid, function (res) {
+    if (res.ok) {
+      next(null, {code: 200, accessToken: res.accessToken});
+    } else {
+      next(null, {code: 500, msg: 'Query wechat account access token failed.'});
+    }
+  });
 };
 
 /**
- * Publish route for mqtt connector.
+ * 登录
  *
- * @param  {Object}   msg     request message
- * @param  {Object}   session current session object
- * @param  {Function} next    next step callback
- * @return {Void}
+ * @param {Object} msg
+ * @param {Object} session
+ * @param {Function} next
+ * @return {void}
  */
-Handler.prototype.publish = function(msg, session, next) {
-	var result = {
-		topic: 'publish',
-		payload: JSON.stringify({code: 200, msg: 'publish message is ok.'})
-	};
-  next(null, result);
-};
-
-/**
- * Subscribe route for mqtt connector.
- *
- * @param  {Object}   msg     request message
- * @param  {Object}   session current session object
- * @param  {Function} next    next step callback
- * @return {Void}
- */
-Handler.prototype.subscribe = function(msg, session, next) {
-	var result = {
-		topic: 'subscribe',
-		payload: JSON.stringify({code: 200, msg: 'subscribe message is ok.'})
-	};
-  next(null, result);
+prototype.login = function (msg, session, next) {
+  if (!msg.hasOwnProperty('accessToken')) {
+    next(null, {
+      code: 500,
+      msg: 'Lost access token.'
+    });
+    return;
+  }
 };
