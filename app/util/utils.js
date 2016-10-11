@@ -3,9 +3,13 @@
  */
 var crc = require('crc');
 
-var Utils = {};
+var Utils = function () {
+  this.$id = 'utils';
+};
 
 module.exports = Utils;
+
+var prototype = Utils.prototype;
 
 /**
  * round robin循环算法
@@ -14,7 +18,7 @@ module.exports = Utils;
  * @param {Array} servers
  * @returns {Object|null}
  */
-Utils.roundRobin = function (id, servers) {
+prototype.roundRobin = function (id, servers) {
   if (Array.isArray(servers)) {
     var number = isNaN(id) ? crc.crc32(id) : Math.floor(id);
     var index = Math.abs(number) % servers.length;

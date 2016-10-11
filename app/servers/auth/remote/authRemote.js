@@ -2,7 +2,19 @@
  * Created by wen.xiang on 16/10/9.
  */
 module.exports = function(app) {
-  return new AuthRemote(app);
+  var bearcat = app.get('bearcat');
+  if (!bearcat) {
+    return null;
+  }
+
+  return bearcat.getBean({
+    id: 'authRemote',
+    func: AuthRemote,
+    args: [{
+      name: 'app',
+      value: app
+    }]
+  });
 };
 
 var AuthRemote = function(app) {

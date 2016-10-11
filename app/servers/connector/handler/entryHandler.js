@@ -1,5 +1,17 @@
 module.exports = function(app) {
-  return new EntryHandler(app);
+  var bearcat = app.get('bearcat');
+  if (!bearcat) {
+    return null;
+  }
+
+  return bearcat.getBean({
+    id: 'entryHandler',
+    func: EntryHandler,
+    args: [{
+      name: 'app',
+      value: app
+    }]
+  });
 };
 
 var EntryHandler = function(app) {

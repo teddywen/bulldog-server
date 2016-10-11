@@ -1,17 +1,33 @@
 /**
  * Created by wen.xiang on 16/10/9.
  */
-
-var Accumulator = require('../../../util/accumulator');
-var Utils = require('../../../util/utils');
-
 module.exports = function (app) {
-  return new GateHandler(app);
+  var bearcat = app.get('bearcat');
+  if (!bearcat) {
+    return null;
+  }
+
+  return bearcat.getBean({
+    id: 'gateHandler',
+    func: GateHandler,
+    args: [{
+      name: 'app',
+      value: app
+    }],
+    props: [{
+      name: '_accumulator',
+      ref: 'accumulator'
+    }, {
+      name: '_utils',
+      ref: 'utils'
+    }]
+  });
 };
 
 var GateHandler = function (app) {
   this._app = app;
-  this._accumulator = new Accumulator();
+  this._accumulator = null;
+  this._utils = null;
 }
 
 var prototype = GateHandler.prototype;
@@ -33,7 +49,7 @@ prototype.queryEntry = function (msg, session, next) {
     return;
   }
 
-  var connector = Utils.roundRobin(id, connectors);
+  var connector = this._utils.roundRobin(id, connectors);
   if (!connector) {
     next(null, {code: 500, msg: 'Dispatch connector failed.'});
     return;
