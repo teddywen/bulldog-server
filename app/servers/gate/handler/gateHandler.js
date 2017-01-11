@@ -28,7 +28,7 @@ var GateHandler = function (app) {
   this._app = app;
   this._accumulator = null;
   this._utils = null;
-}
+};
 
 var prototype = GateHandler.prototype;
 

@@ -5,7 +5,11 @@
   "dependencies": {
     "pomelo": "~1.2.3",
     "crc": "~3.4.0",
-    "bearcat": "~0.4.29"
+    "bearcat": "~0.4.29",
+    "bearcat-dao": "~0.2.13",
+    "node-mysql": "~0.4.2",
+    "async": "~2.1.4",
+    "underscore": "~1.8.3"
   }
 }
 
